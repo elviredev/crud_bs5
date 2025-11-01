@@ -40,8 +40,14 @@
             <td class="text-center">
               <div class="d-flex flex-wrap justify-content-center gap-2">
                 <a href="{{ route('students.show', $student->id) }}" class="btn btn-outline-warning btn-sm">View</a>
-                <a href="" class="btn btn-outline-info btn-sm">Edit</a>
-                <a href="" class="btn btn-outline-danger btn-sm">Delete</a>
+                <a href="{{ route('students.edit', $student->id) }}" class="btn btn-outline-info btn-sm">Edit</a>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteStudentModal"
+                        data-route="{{ route('students.destroy', $student->id) }}"
+                >Delete</button>
               </div>
             </td>
           </tr>
@@ -60,5 +66,51 @@
       </div>
     </div>
   </div>
+
+  <!--Delete modal -->
+  <div class="modal fade" id="deleteStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header border-0">
+          <h1 class="modal-title">Delete Student ?</h1>
+          <button type="button" class="btn-close btn-close-white"
+            data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>You're about to delete this student.</p>
+          <p>This action cannot be reversed.</p>
+        </div>
+        <div class="modal-footer boder-0">
+          <button type="button" class="btn btn-outline-light"
+            data-bs-dismiss="modal">Cancel</button>
+
+          <form id="deleteForm" method="POST">
+            @csrf
+            @method('DELETE')
+            <button
+              type="submit"
+              class="btn btn-outline-danger"
+            >Delete Student</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
+
+@section('scripts')
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteButtons = document.querySelectorAll('.delete-btn');
+      const deleteForm = document.getElementById('deleteForm');
+
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const deleteUrl = this.dataset.route;
+          deleteForm.action = deleteUrl;
+        });
+      });
+    })
+  </script>
 @endsection
 

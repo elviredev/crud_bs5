@@ -22,5 +22,8 @@
       @yield('content')
     </main>
   </div>
+
+  <!--script JS to Delete student modal -->
+  @yield('scripts')
 </body>
 </html>
